@@ -8,4 +8,5 @@ nvcc --version
 GPU 드라이버가 지원하는 최대 CUDA 버전
 nvidia-smi
 
+uv pip uninstall torch torchvision
 uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cu130
