@@ -11,3 +11,4 @@ python-mecab-ko
 soynlp
 datasets
 evaluate
+accelerate
