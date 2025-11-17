@@ -1,0 +1,13 @@
+tiktoken
+transformers
+scikit-learn
+pandas
+numpy
+tiktoken
+blobfile
+protobuf
+kobert-transformers
+python-mecab-ko
+soynlp
+datasets
+evaluate
