@@ -73,7 +73,18 @@ file_path = 'shopping.txt' # 파일 경로 지정 (실제 파일이 현재 경�
 df_data = load_and_preprocess_data(file_path)
 
 # 2. 토큰화 실행
+"""
+✅ 총 200000개의 리뷰 데이터 준비 완료 (3점 제외).
+tokenized_inputs.input_ids.shape: torch.Size([200000, 128])
+tokenized_inputs.attention_mask.shape: torch.Size([200000, 128])
+tokenized_inputs.token_type_ids.shape: torch.Size([200000, 128])
+Input IDs (토큰 인덱스): tensor([   101,   9330,  28000, 119008,  81220,   8915,    102,      0,      0,
+             0,      0,      0,      0,      0,      0])
+"""
 tokenized_inputs, labels = tokenize_data(df_data, tokenizer, max_length=128)
+print(f"tokenized_inputs.input_ids.shape: {tokenized_inputs.input_ids.shape}")
+print(f"tokenized_inputs.attention_mask.shape: {tokenized_inputs.attention_mask.shape}")
+print(f"tokenized_inputs.token_type_ids.shape: {tokenized_inputs.token_type_ids.shape}")
 
 # 결과 확인 (첫 번째 리뷰)
 print("\n--- 토큰화 결과 (첫 번째 리뷰) ---")
@@ -90,7 +101,18 @@ print(f"\n✅ 최종 준비된 데이터 개수: {len(labels)}")
 
 # PyTorch 텐서 형태로 변환된 토큰화 결과와 라벨
 input_ids = tokenized_inputs['input_ids']
+"""
+1: 실제 단어(토큰)가 있는 위치.
+0: 길이를 맞추기 위해 채워 넣은 패딩([PAD]) 위치.
+"""
 attention_masks = tokenized_inputs['attention_mask']
+"""
+역할: 두 개의 문장이 입력될 때, 문장을 구별하기 위한 ID입니다.
+
+구성:
+첫 번째 문장 구간은 0, 두 번째 문장 구간은 1로 채워집니다.
+현재 코드에서의 의미: 작성하신 코드는 '쇼핑 리뷰'라는 하나의 문장을 분류하는 작업입니다. 따라서 두 번째 문장이 없으므로 모든 값이 0으로만 구성되어 있습니다. (질문 답변 같은 쌍(Pair) 데이터 학습 시에만 중요하게 사용됩니다.)
+"""
 token_type_ids = tokenized_inputs['token_type_ids']
 labels_tensor = torch.tensor(labels)
 
@@ -114,6 +136,7 @@ print(f"훈련 셋 (Train Set) 크기: {len(train_dataset)}")
 print(f"검증 셋 (Validation Set) 크기: {len(val_dataset)}")
 print(f"테스트 셋 (Test Set) 크기: {len(test_dataset)}")
 
+exit()
 # 4. DataLoader 생성 (배치 학습 준비)
 batch_size = 16 
 
@@ -241,7 +264,7 @@ for epoch_i in range(0, epochs):
         outputs = model(b_input_ids, 
                         token_type_ids=b_token_type_ids, 
                         attention_mask=b_input_mask, 
-                        labels=b_labels)
+                        labels=b_labels) # <--- 바로 여기서 문장 임베딩 변환이 시작됨
         
         loss = outputs.loss
         total_train_loss += loss.item()
