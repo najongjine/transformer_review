@@ -9,7 +9,7 @@ import datetime
 
 # 1. 사용할 모델의 이름 정의
 # BERT 모델 중 다국어 지원, 기본 사이즈, 대소문자 구분 버전을 사용합니다.
-MODEL_NAME = "distilbert-base-multilingual-cased"
+MODEL_NAME = "bert-base-multilingual-cased"
 
 # 2. 다국어 토크나이저 로드
 # Fast Tokenizer를 사용하여 속도를 개선합니다.
