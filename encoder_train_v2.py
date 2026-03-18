@@ -58,7 +58,7 @@ def tokenize_data(df, tokenizer, max_length=128):
 file_path = 'shopping.txt' 
 df_data = load_and_preprocess_data(file_path)
 print("📊 라벨별 데이터 개수:")
-print(df['label'].value_counts())
+print(df_data['label'].value_counts())
 tokenized_inputs, labels = tokenize_data(df_data, tokenizer, max_length=128)
 
 print(f"\n✅ 최종 준비된 데이터 개수: {len(labels)}")
