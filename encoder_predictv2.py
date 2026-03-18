@@ -25,14 +25,14 @@ def predict_sentiment(text):
         text,
         return_tensors="pt",
         truncation=True,
-        padding='max_length', # 학습할 때와 동일한 설정
+        padding='max_length', 
         max_length=128
     )
     
     # 데이터를 모델이 있는 장치(GPU/CPU)로 이동
     inputs = {k: v.to(device) for k, v in inputs.items()}
 
-    # 기울기 계산 비활성화 (추론 시 메모리 절약 및 속도 향상)
+    # 기울기 계산 비활성화 
     with torch.no_grad():
         outputs = model(**inputs)
 
@@ -42,17 +42,25 @@ def predict_sentiment(text):
     
     # 가장 높은 확률을 가진 클래스와 그 확률 추출
     pred_class = torch.argmax(probabilities, dim=-1).item()
-    pred_prob = probabilities[0][pred_class].item() * 100 # 퍼센트로 변환
+    pred_prob = probabilities[0][pred_class].item() * 100 
 
-    # 결과 문자열 생성 (1: 긍정, 0: 부정)
-    sentiment = "긍정 🟢" if pred_class == 1 else "부정 🔴"
+    # 🚨 [수정된 부분] 결과 문자열 생성 (0: 부정, 1: 중립, 2: 긍정)
+    if pred_class == 2:
+        sentiment = "긍정 🟢"
+    elif pred_class == 1:
+        sentiment = "중립 🟡"
+    else:
+        sentiment = "부정 🔴"
     
     return sentiment, pred_prob
 
 # --- 4. 실제 텍스트로 테스트해보기 ---
 
 test_sentences = [
-    "보통임"
+    "보통임",
+    "배송은 빨랐는데 품질은 그냥 그래요.",
+    "완전 최고! 인생템 찾았습니다.",
+    "돈 아까워요 다신 안 삽니다."
 ]
 
 print("--- 🔍 리뷰 감성 분석 결과 ---")
