@@ -57,7 +57,7 @@ def predict_sentiment(text):
 # --- 4. 실제 텍스트로 테스트해보기 ---
 
 test_sentences = [
-    "느금마"
+    "느금마 만수무강"
 ]
 
 print("--- 🔍 리뷰 감성 분석 결과 ---")
